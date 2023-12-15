@@ -1,7 +1,6 @@
 import { Response } from 'express';
-import { Controller, Res, Get, Post, Body, HttpStatus } from '@nestjs/common';
+import { Controller, Res, Get, Post, HttpStatus } from '@nestjs/common';
 import { StatusService } from 'src/status/status.service';
-import { CreateStatusDTO } from 'src/status/dto/status.dto';
 
 @Controller('status')
 export class StatusController {
@@ -14,18 +13,9 @@ export class StatusController {
     return response.status(HttpStatus.OK).json(status);
   }
   @Post()
-  async initializeStatus(
-    @Res() response: Response,
-    @Body() createUserDTO: CreateStatusDTO,
-  ) {
+  async initializeStatus(@Res() response: Response) {
     try {
-      const { eth_usd, eth_eur, eur_usd, last_updated } = createUserDTO;
-      const newStatus = await this.statusService.initializeStatus(
-        eth_usd,
-        eth_eur,
-        eur_usd,
-        last_updated,
-      );
+      const newStatus = await this.statusService.createStatus();
       return response.status(HttpStatus.OK).json({
         message: 'Status initialized successfully',
         newStatus,

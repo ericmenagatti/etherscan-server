@@ -1,9 +1,10 @@
-import { PartialType, OmitType } from '@nestjs/mapped-types';
+import { PartialType } from '@nestjs/mapped-types';
 import {
   IsBoolean,
   IsNotEmpty,
   IsString,
   IsEthereumAddress,
+  IsOptional,
 } from 'class-validator';
 
 export class WalletDTO {
@@ -28,7 +29,13 @@ export class WalletDTO {
   last_updated: string;
 }
 
+export class UpdateWalletDTO {
+  @IsOptional()
+  @IsString()
+  display_name: string;
+  @IsOptional()
+  @IsBoolean()
+  favorite: boolean;
+}
+
 export class CreateWalletDTO extends PartialType(WalletDTO) {}
-export class UpdateWalletDTO extends PartialType(
-  OmitType(WalletDTO, ['address'] as const),
-) {}

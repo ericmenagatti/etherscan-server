@@ -65,6 +65,21 @@ export class WalletService {
     return newWallet;
   }
 
+  async refreshWallets(): Promise<Wallet[]> {
+    const now = Math.floor(new Date().getTime() / 1000);
+    const wallets = await this.walletModal.find({});
+
+    const updatedWallets: Wallet[] = await Promise.all(
+      wallets.map((wallet) => {
+        if (+now - +wallet.last_updated >= 3600) {
+          return this.refreshWallet(wallet.address);
+        }
+        return wallet;
+      }),
+    );
+    return updatedWallets;
+  }
+
   async refreshWallet(address: string): Promise<Wallet> {
     const balance = await this.getEther(address);
     const now = Math.floor(new Date().getTime() / 1000);
@@ -81,18 +96,8 @@ export class WalletService {
   }
 
   async retrieveWallets(): Promise<Wallet[]> {
-    const now = Math.floor(new Date().getTime() / 1000);
     const wallets = await this.walletModal.find({});
-
-    const updatedWallets: Wallet[] = await Promise.all(
-      wallets.map((wallet) => {
-        if (now - +wallet.last_updated >= 3600) {
-          this.refreshWallet(wallet.address);
-        }
-        return wallet;
-      }),
-    );
-    return updatedWallets;
+    return wallets;
   }
 
   async retrieveWallet(address: string): Promise<Wallet> {

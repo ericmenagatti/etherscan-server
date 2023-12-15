@@ -49,7 +49,7 @@ export class StatusService {
     return newStatus;
   }
 
-  async retrieveStatus(): Promise<Status> {
+  async createStatus(): Promise<Status> {
     const currentStatus = await this.statusModel.findOne({}).lean().exec();
     const now = Math.floor(new Date().getTime() / 1000);
 
@@ -105,5 +105,10 @@ export class StatusService {
       }
     }
     return currentStatus;
+  }
+
+  async retrieveStatus(): Promise<Status> {
+    const currentStatus = await this.statusModel.findOne({}).lean().exec();
+    return currentStatus!;
   }
 }
