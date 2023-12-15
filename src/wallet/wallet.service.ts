@@ -86,7 +86,7 @@ export class WalletService {
 
     const updatedWallets: Wallet[] = await Promise.all(
       wallets.map((wallet) => {
-        if (now - +wallet.last_updated >= 15) {
+        if (now - +wallet.last_updated >= 3600) {
           this.refreshWallet(wallet.address);
         }
         return wallet;

@@ -53,7 +53,7 @@ export class StatusService {
     const currentStatus = await this.statusModel.findOne({}).lean().exec();
     const now = Math.floor(new Date().getTime() / 1000);
 
-    if (!currentStatus || now - +currentStatus.last_updated >= 15) {
+    if (!currentStatus || now - +currentStatus.last_updated >= 3600) {
       const { data: ethPricesData } = await firstValueFrom(
         this.httpService
           .get(
