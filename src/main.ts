@@ -6,7 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors({
-    origin: ['https://YOUR-APP-NAME.vercel.app', 'http://localhost:3000'],
+    origin: ['https://etherscan-client.vercel.app', 'http://localhost:3000'],
     methods: 'GET, HEAD, PUT, POST, DELETE, OPTIONS, PATCH',
     credentials: true,
     allowedHeaders:
